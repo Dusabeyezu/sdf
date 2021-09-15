@@ -1,41 +1,44 @@
 <?php 
-//1 step. check if form is submitted
-if (isset($_post['submit'])) {
-# 2 step.code to create new connection to server and db
-$connection=mysql_connect('localhost','root','','sdf_database');
+// check if the form is submitted
+if (isset($_POST['submit'])) { 
+	// 1. Create a new connection to the server and to the database
+	$connection = mysqli_connect('localhost', 'root', '','sdf_database');
 
-//3 step. test if connection works
-if ($connection===false) {
+	// 2. Test if the connection works
+	if($connection === false){
+		die("An error has occured: " . mysqli_connect_error());
+	}
+
+	// 3. Create variables to capture information from the form
+	$first_name = $_POST['izina'];
+	$last_name  = $_POST['last_name'];
+	$gender     = $_POST['gender'];
+	$date_of_birth = $_POST['date_of_birth'];
+	$highest_academic_level = $_POST['highest_academic_level'];
+	$province   = $_POST['province'];
+	$district   = $_POST['district'];
+	$sector     = $_POST['sector'];
+	$cell       = $_POST['cell'];
+	$email      = $_POST['email'];
+	$password   = $_POST['password'];
+	$learning_option_id = $_POST['learning_option'];
+
 	
-	die("an error has occured:".mysql_connect_error());
+	// 4. create variable for insert query
+	$query = "INSERT INTO applicant( first_name,	last_name,	gender,highest_academic_level,district, sector, cell, amail, paasword, learning_option_id ,date_of_birth) VALUES ('$first_name','$last_name','$gender', '$highest_academic_level'
+	    ,'$district','$sector','$cell','$email','$password',
+	    '$learning_option_id','$date_of_birth')";
+
+	// 5. Execute the query like this: 
+	if (mysqli_query($connection, $query) === true) {
+		echo "Your application has been submitted! You will be informed of the feedback of your application not later than September 15, 2021.";
+	} else {
+		echo "ERROR: There was a problem" . mysqli_error($connection);
+	}
+	
+	// Close connection
+	mysqli_close($connection);
+	// ================
 }
-}
-//3 step.create variable to capture imformation from form
-$first_name=$_POST['first_name']
-$last_name=$_POST['last_name']
-$gender=$_POST['gender']
-$date_of_birth=$_POST['date_of_birth']
-$highest_academic_level=$_POST['highest_academic_level']
 
-$province=$_POST['province']
-$district=$_POST['district']
-$sector=$_POST['sector']
-$celle=$_POST['celle']
-$learning_option=$_POST['learning_option']
-
-
-
-
-
-
-
- ?>
-
-
-
-
-
-
-
-
->
+?>
